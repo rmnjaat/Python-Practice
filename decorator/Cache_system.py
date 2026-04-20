@@ -52,3 +52,14 @@ sleep(5)
 print(f2(1,2))
 sleep(2)
 print(f2(1,2))
+
+## now probelm is  How this wil be behaving in the fast api server ?  in parallel provcessing environment
+
+# Server have 4 worker , then each will have there own cache  dict ,  
+    #1. if sync handlers  then , multiple threasdpool threads running parallly then casue race condition 
+    
+    #2. if async -> then if db call is await ,   then till hat it will ruin in even loop.
+        # other  option is make this             result = fun(*args, **kwargs) call  or dump this call to the  other executor , async.run_in_executor().
+
+    ## read operations are  race condition safe , but wile writing in cache u have to a condition like  if it is locked then do not wrtie just return the call.
+    ## duplicate db operations are there..
